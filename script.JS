@@ -2,7 +2,6 @@ let user = JSON.parse(localStorage.getItem('user'));
 let title;
 let body = document.querySelector('body');
 let overlay = document.querySelector('.overlay');
-user = capitalize(user);
 
 function setUserName() {
     if (user == undefined) {
@@ -32,15 +31,12 @@ function setUserName() {
                 console.log(user);
                 render();
             }
-            user = capitalize(user);
+            
             title = document.querySelector('.title').innerHTML = `<h1><span> ${user}'s</span> tasks </h1>`;
         });
     }
 }
 
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
 
 title = document.querySelector('.title').innerHTML = `<h1><span> ${user}'s</span> tasks</h1>`;
 setUserName();
