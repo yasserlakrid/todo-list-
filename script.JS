@@ -2,6 +2,7 @@ let user = JSON.parse(localStorage.getItem('user'));
 let title;
 let body = document.querySelector('body');
 let overlay = document.querySelector('.overlay');
+user = capitalize(user);
 
 function setUserName() {
     if (user == undefined) {
@@ -9,8 +10,8 @@ function setUserName() {
         let loginInp = document.querySelector('.loginInp');
         login.style.display = 'flex';
         login.style.pointerEvents = 'auto';
-        
-        // Blur the body when login is displayed
+        title = document.querySelector('.title');
+        title.style.filter='blur(10px)';
         body.style.backgroundColor = 'gray';
         body.style.pointerEvents = 'none';
         show.style.filter='blur(10px)'
@@ -28,25 +29,31 @@ function setUserName() {
                 tasktool.style.filter='blur(0px)'
                 todoInp.style.filter='blur(0px)'
                 show.style.filter='blur(0px)'
+                title.style.filter='blur(0px)';
                 console.log(user);
                 render();
-            }
-            
-            title = document.querySelector('.title').innerHTML = `<h1><span> ${user}'s</span> tasks </h1>`;
+            user = capitalize(user);
+            title.innerHTML = `<h1><span> ${user}'s</span> tasks </h1>`;
+        }
+        
         });
     }
 }
 
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 title = document.querySelector('.title').innerHTML = `<h1><span> ${user}'s</span> tasks</h1>`;
 setUserName();
-
 let span = document.querySelector('span');
-span.addEventListener('click', () => {
-    user = undefined;
-    setUserName();
-    capitalize(user);
+        span.addEventListener('click', () => {
+         if (show.style.display !== 'none') {
+         user = undefined;
+          setUserName();
+         capitalize(user);}
 });
+
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 let show = document.querySelector('.tasks');
@@ -57,7 +64,7 @@ let index, taskspecifics, taskstate;
 let todoInp = document.querySelector('.todoInp');
 
 let addBtn = document.querySelector('.addBtn').addEventListener('click', function add() {
-    if (show.style.display === 'block') {
+    if (show.style.display !== 'none') {
         let tododate = document.querySelector('.taskdate');
         let todotime = document.querySelector('.tasktime');
         let task = { taskN: todoInp.value, taskD: tododate.value, taskT: todotime.value, taskdone: false };
@@ -103,13 +110,37 @@ function render() {
             taskspecifics = document.querySelector('.tasksspecifics');
             taskspecifics.style.display = 'block';
             if (tasks[clickedIndex].taskdone == true) { taskstate = 'done' } else { taskstate = 'not yet' }
-            taskspecifics.innerHTML =
+            if(tasks[clickedIndex].taskD !==''){
+               taskspecifics.innerHTML =
                 `<h1>${tasks[clickedIndex].taskN}</h1>
                     <div>
                         <p>task day : ${tasks[clickedIndex].taskD}</p>
                         <p> task state : ${taskstate}</p>
+                        
+                    </div>
+                    ` 
+            }else{
+                taskspecifics.innerHTML =
+                `<h1>${tasks[clickedIndex].taskN}</h1>
+                    <div>
+                        <p> task state : ${taskstate}</p>
+                        
+                    </div>
+                    ` 
+            }
+            
+            if(taskstate = 'not yet'){
+                taskspecifics.innerHTML =
+                `<h1>${tasks[clickedIndex].taskN}</h1>
+                    <div>
+                        <p>task day : ${tasks[clickedIndex].taskD}</p>
+                        <p> task state : ${taskstate}</p>
+                        <p>progress : </p>
+                        <input class='prog' type='range'>
+                        
                     </div>
                     `
+            }
 
         })
     })
