@@ -3,6 +3,14 @@ let title;
 let body = document.querySelector('body');
 let overlay = document.querySelector('.overlay');
 
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let show = document.querySelector('.tasks');
+let backButton = document.querySelector('.backbutton');
+backButton.style.display = 'none';
+let tasktool = document.querySelector('.tasktool');
+let index, taskspecifics, taskstate;
+let todoInp = document.querySelector('.todoInp');
+
 
 function setUserName() {
     if (user == undefined) {
@@ -50,14 +58,6 @@ let span = document.querySelector('span');
          capitalize(user);}
 });
 
-
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-let show = document.querySelector('.tasks');
-let backButton = document.querySelector('.backbutton');
-backButton.style.display = 'none';
-let tasktool = document.querySelector('.tasktool');
-let index, taskspecifics, taskstate;
-let todoInp = document.querySelector('.todoInp');
 
 let addBtn = document.querySelector('.addBtn').addEventListener('click', function add() {
     if (show.style.display !== 'none') {
